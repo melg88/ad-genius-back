@@ -1,0 +1,37 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: adgenius-api
+    entrypoint: 'yarn start:dev'
+    tty: true
+    volumes:
+      - './:/usr/src/adgeniusback'
+      - './node_modules:/app/node_modules'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    networks:
+      - adgeniusback
+  postgres:
+    image: postgres:14.1
+    container_name: adgeniusback-postgres
+    restart: always
+    volumes:
+      - './postgres/data:/var/lib/postgresql/data'
+    tty: true
+    environment:
+      POSTGRES_DB: adgeniusback
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - '3003:5432'
+    networks:
+      - adgeniusback
+
+networks:
+  adgeniusback:
+    driver: bridge
