@@ -12,33 +12,6 @@ export class AdRepository {
 		description: string,
 		hashtags: string[]
 	) {
-		const user = await this.prisma.user.findUnique({
-			where: {
-				id: userId
-			},
-			select: {
-				id: true,
-				credits: true
-			}
-		})
-
-		if (!user) {
-			throw new Error('user/get-failed')
-		}
-
-		if (user.credits === 0) {
-			throw new Error('user/credits-insufficient')
-		}
-
-		await this.prisma.user.update({
-			where: {
-				id: userId
-			},
-			data: {
-				credits: user.credits - 1
-			}
-		})
-
 		return await this.prisma.ad.create({
 			data: {
 				id,

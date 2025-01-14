@@ -33,7 +33,7 @@ export class AdController {
 	@ApiResponse(CREATE_AD_API_RESPONSE)
 	async create(@Param('id') id: string, @Body() ad: CreateAdDTO): Promise<Ad> {
 		try {
-			return await this.adService.createAd(id, ad.userId, ad.price)
+			return await this.adService.createAd(id, ad)
 		} catch (error) {
 			throw new InternalServerErrorException('ad/create-failed')
 		}

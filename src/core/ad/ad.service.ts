@@ -1,3 +1,4 @@
+import { CreateAdDTO } from './dtos/index'
 import { OpenaiService } from './../../services/openai/openai.service'
 import { Inject } from '@nestjs/common'
 import { AdRepository } from './ad.repository'
@@ -10,13 +11,25 @@ export class AdService {
 		@Inject(OpenaiService) protected openaiService: OpenaiService
 	) {}
 
-	async createAd(id: string, userId: string, price: number) {
+	async createAd(id: string, ad: CreateAdDTO) {
+		const user = await this.identityRepository.getUserById(ad.userId)
+
+		if (!user) {
+			throw new Error('user/get-failed')
+		}
+
+		if (user.credits === 0) {
+			throw new Error('user/credits-insufficient')
+		}
+
+		await this.identityRepository.updateUserCredits(ad.userId, user.credits - 1)
+
 		// const adGenerated = await this.openaiService.generateAnswer()
 
 		return await this.adRepository.createAd(
 			id,
-			userId,
-			price,
+			ad.userId,
+			ad.price,
 			'adGenerated.title',
 			'adGenerated.description',
 			['adGenerated.hashtags']
