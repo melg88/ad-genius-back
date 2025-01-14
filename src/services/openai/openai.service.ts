@@ -16,7 +16,7 @@ export class OpenaiService {
 				messages: [
 					{
 						role: 'system',
-						content: prompt
+						content: 'prompt'
 					}
 				],
 				model: 'gpt-4'
