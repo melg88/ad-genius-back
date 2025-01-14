@@ -11,6 +11,7 @@ export class OpenaiService {
 
 	async generateAnswer() {
 		try {
+			const prompt = ''
 			const answer = await this.openai.chat.completions.create({
 				messages: [
 					{
