@@ -9,4 +9,12 @@ export class CreateAdDTO {
 	@ApiProperty({ description: 'The price' })
 	@IsNumber({}, { message: 'price must be a number' })
 	price: number
+
+	@ApiProperty({ description: 'The title' })
+	@IsString({ message: 'title must be a string' })
+	title: string
+
+	@ApiProperty({ description: 'The description' })
+	@IsString({ message: 'description must be a string' })
+	description: string
 }

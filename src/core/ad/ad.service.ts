@@ -24,7 +24,7 @@ export class AdService {
 
 		await this.identityRepository.updateUserCredits(ad.userId, user.credits - 1)
 
-		// const adGenerated = await this.openaiService.generateAnswer()
+		// const adGenerated = await this.openaiService.generateAnswer(ad)
 
 		return await this.adRepository.createAd(
 			ad.userId,
