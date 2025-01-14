@@ -366,3 +366,9 @@ export const GET_TRANSCRIPTION_API_RESPONSE = {
 		}
 	}
 }
+
+export const CREATE_AD_API_RESPONSE = {
+	status: 201,
+	description: 'Anúnio criado com sucesso',
+	schema: EMPTY_SCHEMA_API_RESPONSE
+}

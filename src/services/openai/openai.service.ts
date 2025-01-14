@@ -9,13 +9,13 @@ export class OpenaiService {
 		this.openai.apiKey = process.env.OPENAI_API_KEY
 	}
 
-	async generateAnswer(prompt: string) {
+	async generateAnswer() {
 		try {
 			const answer = await this.openai.chat.completions.create({
 				messages: [
 					{
 						role: 'system',
-						content: prompt
+						content: 'prompt'
 					}
 				],
 				model: 'gpt-4'
