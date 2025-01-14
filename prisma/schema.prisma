@@ -27,7 +27,6 @@ model Ad {
   description String    @map("description")
 	price       Int       @map("price")
   imagesUrls  String[]  @map("images_urls")
-  price       Float     @map("price")
   userId      String    @map("user_id")
   user        User      @relation(fields: [userId], references: [id])
 }

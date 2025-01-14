@@ -1,12 +1,10 @@
-import { IdentityService } from '@core/identity/identity.service'
 import {
 	Inject,
 	Post,
 	Body,
 	Controller,
 	HttpCode,
-	InternalServerErrorException,
-	Param
+	InternalServerErrorException
 } from '@nestjs/common'
 import { ApiResponse, ApiBody } from '@nestjs/swagger'
 import { AdService } from './ad.service'
@@ -20,20 +18,17 @@ import { Ad } from './entities/ad.entity'
 
 @ApiResponse(INTERNAL_SERVER_ERROR_API_RESPONSE)
 @ApiResponse(BAD_REQUEST_API_RESPONSE)
-@Controller('identity')
+@Controller('ad')
 export class AdController {
-	constructor(
-		@Inject(AdService) protected adService: AdService,
-		@Inject(IdentityService) protected identityService: IdentityService
-	) {}
+	constructor(@Inject(AdService) protected adService: AdService) {}
 
-	@Post('create-ad/:id')
+	@Post()
 	@HttpCode(201)
 	@ApiBody({ type: CreateAdDTO })
 	@ApiResponse(CREATE_AD_API_RESPONSE)
-	async create(@Param('id') id: string, @Body() ad: CreateAdDTO): Promise<Ad> {
+	async create(@Body() ad: CreateAdDTO): Promise<Ad> {
 		try {
-			return await this.adService.createAd(id, ad)
+			return await this.adService.createAd(ad)
 		} catch (error) {
 			throw new InternalServerErrorException('ad/create-failed')
 		}

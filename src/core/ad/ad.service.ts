@@ -11,7 +11,7 @@ export class AdService {
 		@Inject(OpenaiService) protected openaiService: OpenaiService
 	) {}
 
-	async createAd(id: string, ad: CreateAdDTO) {
+	async createAd(ad: CreateAdDTO) {
 		const user = await this.identityRepository.getUserById(ad.userId)
 
 		if (!user) {
@@ -27,7 +27,6 @@ export class AdService {
 		// const adGenerated = await this.openaiService.generateAnswer()
 
 		return await this.adRepository.createAd(
-			id,
 			ad.userId,
 			ad.price,
 			'adGenerated.title',

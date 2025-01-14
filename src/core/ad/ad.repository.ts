@@ -5,7 +5,6 @@ export class AdRepository {
 	constructor(@Inject(PrismaService) protected prisma: PrismaService) {}
 
 	async createAd(
-		id: string,
 		userId: string,
 		price: number,
 		title: string,
@@ -14,7 +13,6 @@ export class AdRepository {
 	) {
 		return await this.prisma.ad.create({
 			data: {
-				id,
 				userId,
 				price: price,
 				title: title,
