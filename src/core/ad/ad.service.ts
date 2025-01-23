@@ -1,6 +1,6 @@
 import { CreateAdDTO } from './dtos/index'
 import { OpenaiService } from './../../services/openai/openai.service'
-import { Inject } from '@nestjs/common'
+import { Inject, NotFoundException } from '@nestjs/common'
 import { AdRepository } from './ad.repository'
 import { IdentityRepository } from '@core/identity/identity.repository'
 
@@ -33,5 +33,13 @@ export class AdService {
 			'adGenerated.description',
 			['adGenerated.hashtags']
 		)
+	}
+
+	async findAdById(adId: string) {
+		const ad = await this.adRepository.findOneById(adId)
+		if (!ad) {
+			throw new NotFoundException('ad/not-found');
+		}
+		return ad;
 	}
 }
