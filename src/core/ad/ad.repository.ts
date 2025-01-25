@@ -21,4 +21,11 @@ export class AdRepository {
 			}
 		})
 	}
+
+	
+	async findByUserId(userId: string) {
+		return await this.prisma.ad.findMany({
+			where: { userId }  
+		})
+	}
 }

@@ -9,10 +9,13 @@ import {
 import { ApiResponse, ApiBody } from '@nestjs/swagger'
 import { AdService } from './ad.service'
 import { CreateAdDTO } from './dtos'
+import { Get, Param } from '@nestjs/common'
+import { ApiParam } from '@nestjs/swagger'
 import {
 	INTERNAL_SERVER_ERROR_API_RESPONSE,
 	BAD_REQUEST_API_RESPONSE,
-	CREATE_AD_API_RESPONSE
+	CREATE_AD_API_RESPONSE,
+	GET_USER_API_RESPONSE
 } from '@core/common/docs/constants'
 import { Ad } from './entities/ad.entity'
 
@@ -33,4 +36,16 @@ export class AdController {
 			throw new InternalServerErrorException('ad/create-failed')
 		}
 	}
+
+	@Get(':userId')
+	@ApiResponse(GET_USER_API_RESPONSE)
+	@ApiParam({ name: 'userId', type: String, description: 'ID do usuário' })
+	async getAdsByUserId(@Param('userId') userId: string): Promise<Ad[]> {
+		try {
+			return await this.adService.findByUserId(userId)
+		} catch (error) {
+			throw new InternalServerErrorException('ad/get-failed')
+		}
+	}
 }
+
