@@ -25,14 +25,14 @@ export class AdService {
 
 		await this.identityRepository.updateUserCredits(ad.userId, user.credits - 1)
 
-		// const adGenerated = await this.openaiService.generateAnswer(ad)
+		const adGenerated = await this.openaiService.generateAdContent(ad.productName, ad.targetAudience, ad.keyFeatures)
 
 		return await this.adRepository.createAd(
 			ad.userId,
 			ad.price,
-			'adGenerated.title',
-			'adGenerated.description',
-			['adGenerated.hashtags']
+			adGenerated.title,
+			adGenerated.description,
+			adGenerated.hashtags
 		)
 	}
 
@@ -42,6 +42,7 @@ export class AdService {
 			throw new NotFoundException('ad/not-found');
 		}
 		return ad;
+	}
 
 	async findByUserId(userId: string): Promise<Ad[]> {
 		try {

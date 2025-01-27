@@ -12,7 +12,6 @@ import {
 import { ApiResponse, ApiBody } from '@nestjs/swagger'
 import { AdService } from './ad.service'
 import { CreateAdDTO } from './dtos'
-import { Get, Param } from '@nestjs/common'
 import { ApiParam } from '@nestjs/swagger'
 import {
 	INTERNAL_SERVER_ERROR_API_RESPONSE,
@@ -52,6 +51,8 @@ export class AdController {
 				throw error;
 			}
 			throw new InternalServerErrorException('ad/find-failed')
+		}	
+	}
 
 	@Get(':userId')
 	@ApiResponse(GET_USER_API_RESPONSE)

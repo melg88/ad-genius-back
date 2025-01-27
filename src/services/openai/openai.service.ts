@@ -35,22 +35,20 @@ export class OpenaiService {
   async generateAdContent(
     productName: string,
     targetAudience: string,
-    keyFeatures: string[]
+    keyFeatures: string
   ): Promise<{ title: string; description: string; hashtags: string[] }> {
     // generate title
     const titlePrompt = `Generate a catchy and engaging title for a product called "${productName}" targeted at "${targetAudience}".`;
     const title = await this.generateCompletion(titlePrompt);
 
     // generate description
-    const descriptionPrompt = `Write a compelling description for a product called "${productName}" targeted at "${targetAudience}" highlighting the following features: ${keyFeatures.join(
-      ', '
-    )}.`;
+    const descriptionPrompt = `Write a compelling description for a product called "${productName}" targeted at "${targetAudience}"
+     highlighting the following features: ${keyFeatures}.`;
     const description = await this.generateCompletion(descriptionPrompt);
 
     // generate hashtags
-    const hashtagsPrompt = `Suggest 5 relevant and popular hashtags for a product called "${productName}" targeted at "${targetAudience}" and related to these features: ${keyFeatures.join(
-      ', '
-    )}. Return only the hashtags, separated by commas.`;
+    const hashtagsPrompt = `Suggest 5 relevant and popular hashtags for a product called "${productName}" targeted at "${targetAudience}" 
+    and related to these features: ${keyFeatures}. Return only the hashtags, separated by commas.`;
     const hashtagsResponse = await this.generateCompletion(hashtagsPrompt);
     const hashtags = hashtagsResponse.split(',').map((tag) => tag.trim());
 
