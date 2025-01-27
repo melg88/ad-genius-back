@@ -3,6 +3,7 @@ import { OpenaiService } from './../../services/openai/openai.service'
 import { Inject, NotFoundException } from '@nestjs/common'
 import { AdRepository } from './ad.repository'
 import { IdentityRepository } from '@core/identity/identity.repository'
+import { Ad } from './entities/ad.entity'
 
 export class AdService {
 	constructor(
@@ -41,5 +42,13 @@ export class AdService {
 			throw new NotFoundException('ad/not-found');
 		}
 		return ad;
+
+	async findByUserId(userId: string): Promise<Ad[]> {
+		try {
+			return await this.adRepository.findByUserId(userId);  
+		} catch (error) {
+			throw new Error('Error fetching ads by user');  
+		}
+
 	}
 }

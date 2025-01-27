@@ -36,6 +36,12 @@ export class AdRepository {
 				imagesUrls: true,
 				userId: true,
 			}
+
+	
+	async findByUserId(userId: string) {
+		return await this.prisma.ad.findMany({
+			where: { userId }  
+
 		})
 	}
 }
