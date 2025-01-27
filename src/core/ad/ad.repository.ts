@@ -22,10 +22,26 @@ export class AdRepository {
 		})
 	}
 
+	async findOneById(adId: string) {
+		return await this.prisma.ad.findUnique({
+			where: { 
+				id: adId 
+			},
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				price: true,
+				hashtags: true,
+				imagesUrls: true,
+				userId: true,
+			}
+
 	
 	async findByUserId(userId: string) {
 		return await this.prisma.ad.findMany({
 			where: { userId }  
+
 		})
 	}
 }

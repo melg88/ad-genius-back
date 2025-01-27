@@ -1,6 +1,6 @@
 import { CreateAdDTO } from './dtos/index'
 import { OpenaiService } from './../../services/openai/openai.service'
-import { Inject } from '@nestjs/common'
+import { Inject, NotFoundException } from '@nestjs/common'
 import { AdRepository } from './ad.repository'
 import { IdentityRepository } from '@core/identity/identity.repository'
 import { Ad } from './entities/ad.entity'
@@ -35,12 +35,20 @@ export class AdService {
 			['adGenerated.hashtags']
 		)
 	}
-	// Método findByUserId para buscar anúncios por userId
+
+	async findAdById(adId: string) {
+		const ad = await this.adRepository.findOneById(adId)
+		if (!ad) {
+			throw new NotFoundException('ad/not-found');
+		}
+		return ad;
+
 	async findByUserId(userId: string): Promise<Ad[]> {
 		try {
 			return await this.adRepository.findByUserId(userId);  
 		} catch (error) {
 			throw new Error('Error fetching ads by user');  
 		}
+
 	}
 }
