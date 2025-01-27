@@ -17,11 +17,23 @@ model User {
   tier      Tier      @default(FREE) @map("tier")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  ads       Ad[]
 }
 
- 
+model Ad {
+  id          String    @id @default(uuid())
+  title       String    @map("title")
+  hashtags    String[]  @map("hashtags")
+  description String    @map("description")
+	price       Int       @map("price")
+  imagesUrls  String[]  @map("images_urls") @default([])
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+
 enum Tier {
   FREE
   BASIC
-  PREMIUM 
+  PREMIUM
 }
