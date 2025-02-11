@@ -7,7 +7,8 @@ import {
 	Controller,
 	HttpCode,
 	InternalServerErrorException,
-	NotFoundException
+	NotFoundException,
+	Delete
 } from '@nestjs/common'
 import { ApiResponse, ApiBody } from '@nestjs/swagger'
 import { AdService } from './ad.service'
@@ -18,7 +19,8 @@ import {
 	BAD_REQUEST_API_RESPONSE,
 	CREATE_AD_API_RESPONSE,
 	FIND_AD_API_RESPONSE,
-	GET_USER_API_RESPONSE
+	GET_USER_API_RESPONSE,
+	DELETE_AD_API_RESPONSE
 } from '@core/common/docs/constants'
 import { Ad } from './entities/ad.entity'
 
@@ -63,6 +65,21 @@ export class AdController {
 		} catch (error) {
 			throw new InternalServerErrorException('ad/get-failed')
 
+		}
+	}
+
+	@Delete(':id')
+	@HttpCode(204) // NoContent
+	@ApiResponse(DELETE_AD_API_RESPONSE)
+	@ApiParam({ nam: 'id', type: String, description: 'ID do anúncio'}) // para documentar - opcional
+	async deleteAd(@Param('id') id: string): Promise<void> {
+		try {
+			await this.adService.deleteAd(id)
+		} catch (error) {
+			if(error instanceof NotFoundException) {
+							throw error;
+			}
+			throw new InternalServerErrorException('ad/delete-failed')
 		}
 	}
 }
