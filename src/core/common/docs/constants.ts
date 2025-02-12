@@ -389,3 +389,8 @@ export const FIND_AD_API_RESPONSE = {
 		},
 	}
 }
+
+export const DELETE_AD_API_RESPONSE = {
+	status: 204,
+	description: 'Anúncio deletado com sucesso.',
+}

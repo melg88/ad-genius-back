@@ -45,4 +45,10 @@ export class AdRepository {
 
 		})
 	}
+
+	async deleteAd(id: string): Promise<void> {
+		await this.prisma.ad.delete({
+			where: { id }
+		});
+	}
 }

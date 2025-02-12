@@ -50,6 +50,21 @@ export class AdService {
 		} catch (error) {
 			throw new Error('Error fetching ads by user');  
 		}
-
 	}
+
+	async deleteAd(id: string): Promise<void> {
+		try {
+			const ad = await this.adRepository.findOneById(id);
+			if (!ad) {
+				throw new NotFoundException('ad/not-found');
+			}
+			await this.adRepository.deleteAd(id);
+		} catch (error) {
+			if(error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new Error('ad/delete-failed')
+		}
+	}
+	
 }
