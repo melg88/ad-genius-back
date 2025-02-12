@@ -366,3 +366,31 @@ export const GET_TRANSCRIPTION_API_RESPONSE = {
 		}
 	}
 }
+
+export const CREATE_AD_API_RESPONSE = {
+	status: 201,
+	description: 'Anúncio criado com sucesso',
+	schema: EMPTY_SCHEMA_API_RESPONSE
+}
+
+export const FIND_AD_API_RESPONSE = {
+	status: 200,
+	description: 'Anúncio encontrado com sucesso',
+	schema: {
+		type: 'object',
+		properties: {
+		  id: { type: 'string' },
+		  title: { type: 'string' },
+		  description: { type: 'string' },
+		  price: { type: 'integer' },
+		  hashtags: { type: 'array', items: { type: 'string' } },
+		  imagesUrls: { type: 'array', items: { type: 'string' } },
+		  userId: { type: 'string' },
+		},
+	}
+}
+
+export const DELETE_AD_API_RESPONSE = {
+	status: 204,
+	description: 'Anúncio deletado com sucesso.',
+}
