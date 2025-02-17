@@ -69,9 +69,9 @@ export class AdController {
 	}
 
 	@Delete(':id')
-	@HttpCode(204) // NoContent
+	@HttpCode(204) 
 	@ApiResponse(DELETE_AD_API_RESPONSE)
-	@ApiParam({ nam: 'id', type: String, description: 'ID do anúncio'}) // para documentar - opcional
+	@ApiParam({ name: 'id', type: String, description: 'ID do anúncio'}) 
 	async deleteAd(@Param('id') id: string): Promise<void> {
 		try {
 			await this.adService.deleteAd(id)
