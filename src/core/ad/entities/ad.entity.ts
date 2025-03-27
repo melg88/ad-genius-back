@@ -15,7 +15,7 @@ export class Ad {
 	title: string
 	description: string
 	hashtags: string[]
-	imageUrl?: string[]
+	imageUrl?: string
 	constructor(ad: Ad) {
 		this.id = ad.id
 		this.userId = ad.userId

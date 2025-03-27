@@ -12,7 +12,7 @@ export class AdService {
 		@Inject(OpenaiService) protected openaiService: OpenaiService
 	) {}
 
-	async createAd(ad: CreateAdDTO) {
+	async createAd(ad: CreateAdDTO, filePath: string) {
 		const user = await this.identityRepository.getUserById(ad.userId)
 
 		if (!user) {
@@ -31,6 +31,7 @@ export class AdService {
 			ad.userId,
 			ad.price,
 			adGenerated.title,
+			"ad.imageUrl",
 			adGenerated.description,
 			adGenerated.hashtags
 		)

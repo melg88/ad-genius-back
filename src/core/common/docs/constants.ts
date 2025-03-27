@@ -118,259 +118,29 @@ export const GET_USER_API_RESPONSE = {
 	}
 }
 
-export const UPDATE_ANSWER_API_RESPONSE = {
-	status: 200,
-	description: 'Resposta atualizada com sucesso',
-	schema: {
-		properties: {
-			id: {
-				type: 'string'
-			},
-			transId: {
-				type: 'string'
-			},
-			question: {
-				type: 'string'
-			},
-			answer: {
-				type: 'string'
-			},
-			createdAt: {
-				type: 'string',
-				format: 'date-time'
-			}
-		}
-	}
-}
 
-export const DELETE_QUESTION_API_RESPONSE = {
-	status: 200,
-	description: 'Questão deletada com sucesso',
-	schema: EMPTY_SCHEMA_API_RESPONSE
-}
-
-export const QUESTION_ID_PARAM = {
-	name: 'id',
-	required: true,
-	description: 'Id da questão',
-	type: 'string'
-}
-
-export const TRANS_ID_PARAM = {
-	name: 'id',
-	required: true,
-	description: 'Id da transcrição',
-	type: 'string'
-}
-
-export const CREATE_QUESTION_API_RESPONSE = {
-	status: 201,
-	description: 'Questão criada com sucesso',
-	schema: {
-		properties: {
-			id: {
-				type: 'string'
-			},
-			transId: {
-				type: 'string'
-			},
-			question: {
-				type: 'string'
-			},
-			answer: {
-				type: 'string'
-			},
-			createdAt: {
-				type: 'string',
-				format: 'date-time'
-			}
-		}
-	}
-}
-
-export const GET_QUESTION_API_RESPONSE = {
-	status: 200,
-	description: 'Ok',
-	schema: {
-		properties: {
-			id: {
-				type: 'string'
-			},
-			transId: {
-				type: 'string'
-			},
-			question: {
-				type: 'string'
-			},
-			answer: {
-				type: 'string'
-			},
-			createdAt: {
-				type: 'string',
-				format: 'date-time'
-			}
-		}
-	}
-}
-
-export const GET_QUESTIONS_API_RESPONSE = {
-	status: 200,
-	description: 'Ok',
-	schema: {
-		type: 'array',
-		items: {
-			type: 'object',
-			properties: {
-				id: {
-					type: 'string'
-				},
-				createdAt: {
-					type: 'string',
-					format: 'date-time'
-				},
-				question: {
-					type: 'string'
-				},
-				answer: {
-					type: 'string'
-				}
-			}
-		}
-	}
-}
-
-export const DELETE_SUMMARY_API_RESPONSE = {
-	status: 200,
-	description: 'Resumo deletado com sucesso',
-	schema: EMPTY_SCHEMA_API_RESPONSE
-}
-
-export const CREATE_SUMMARY_DTO_API_RESPONSE = {
-	status: 201,
-	description: 'Resumo criado com sucesso',
-	schema: {
-		properties: {
-			id: {
-				type: 'string'
-			},
-			name: {
-				type: 'string'
-			},
-			summary: {
-				type: 'string'
-			}
-		}
-	}
-}
-
-export const GET_SUMMARY_API_RESPONSE = {
-	status: 200,
-	description: 'Ok',
-	schema: {
-		properties: {
-			id: {
-				type: 'string'
-			},
-			name: {
-				type: 'string'
-			},
-			summary: {
-				type: 'string'
-			}
-		}
-	}
-}
-
-export const CREATE_TRANSCRIPTION_API_RESPONSE = {
-	status: 201,
-	description: 'Transcrição criada com sucesso',
-	schema: EMPTY_SCHEMA_API_RESPONSE
-}
-
-export const DELETE_TRANSCRIPTION_API_RESPONSE = {
-	status: 200,
-	description: 'Transcrição deletada com sucesso',
-	schema: EMPTY_SCHEMA_API_RESPONSE
-}
-
-export const GET_TRANSCRIPTIONS_API_RESPONSE = {
-	status: 200,
-	description: 'Ok',
-	schema: {
-		type: 'array',
-		items: {
-			type: 'object',
-			properties: {
-				id: {
-					type: 'string'
-				},
-				name: {
-					type: 'string'
-				},
-				duration: {
-					type: 'number'
-				},
-				createdAt: {
-					type: 'string',
-					format: 'date-time'
-				}
-			}
-		}
-	}
-}
-
-export const GET_TRANSCRIPTION_API_RESPONSE = {
-	status: 200,
-	description: 'Ok',
-	schema: {
-		properties: {
-			id: {
-				type: 'string'
-			},
-			userId: {
-				type: 'string'
-			},
-			name: {
-				type: 'string'
-			},
-			text: {
-				type: 'array',
-				items: {
-					type: 'object',
-					properties: {
-						confidence: {
-							type: 'number'
-						},
-						end: {
-							type: 'number'
-						},
-						speaker: {
-							type: 'string'
-						},
-						start: {
-							type: 'number'
-						},
-						text: {
-							type: 'string'
-						}
-					}
-				}
-			},
-			duration: {
-				type: 'number'
-			},
-			createdAt: {
-				type: 'string',
-				format: 'date-time'
-			}
-		}
-	}
-}
 
 export const CREATE_AD_API_RESPONSE = {
 	status: 201,
 	description: 'Anúncio criado com sucesso',
 	schema: EMPTY_SCHEMA_API_RESPONSE
+}
+
+export const SHARE_AD_API_RESPONSE = {
+	status: 201,
+	description: 'Anúncio compartilhado com sucesso',
+	schema: {
+		type: 'object',
+		properties: {
+		  id: { type: 'string' },
+		  title: { type: 'string' },
+		  description: { type: 'string' },
+		  price: { type: 'integer' },
+		  hashtags: { type: 'array', items: { type: 'string' } },
+		  imagesUrls: { type: 'array', items: { type: 'string' } },
+		  userId: { type: 'string' },
+		},
+	}
 }
 
 export const FIND_AD_API_RESPONSE = {
