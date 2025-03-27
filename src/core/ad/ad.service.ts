@@ -25,13 +25,15 @@ export class AdService {
 
 		await this.identityRepository.updateUserCredits(ad.userId, user.credits - 1)
 
-		const adGenerated = await this.openaiService.generateAdContent(ad.productName, ad.targetAudience, ad.keyFeatures)
+		const imageUrl = `https://yourdomain.com/${filePath}`
+
+		const adGenerated = await this.openaiService.generateAdContent(ad.productName, ad.targetAudience, imageUrl)
 
 		return await this.adRepository.createAd(
 			ad.userId,
 			ad.price,
 			adGenerated.title,
-			"ad.imageUrl",
+			imageUrl,
 			adGenerated.description,
 			adGenerated.hashtags
 		)
