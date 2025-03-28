@@ -4,15 +4,17 @@ import { Inject, NotFoundException } from '@nestjs/common'
 import { AdRepository } from './ad.repository'
 import { IdentityRepository } from '@core/identity/identity.repository'
 import { Ad } from './entities/ad.entity'
+import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service'
 
 export class AdService {
 	constructor(
 		@Inject(AdRepository) protected adRepository: AdRepository,
 		@Inject(IdentityRepository) protected identityRepository: IdentityRepository,
-		@Inject(OpenaiService) protected openaiService: OpenaiService
+		@Inject(OpenaiService) protected openaiService: OpenaiService,
+		@Inject(CloudinaryService) protected cloudinaryService: CloudinaryService
 	) {}
 
-	async createAd(ad: CreateAdDTO, filePath: string) {
+	async createAd(ad: CreateAdDTO, file: Express.Multer.File ) {
 		const user = await this.identityRepository.getUserById(ad.userId)
 
 		if (!user) {
@@ -25,7 +27,9 @@ export class AdService {
 
 		await this.identityRepository.updateUserCredits(ad.userId, user.credits - 1)
 
-		const imageUrl = `https://yourdomain.com/${filePath}`
+		const imageUrl = await this.cloudinaryService.uploadImageFromBuffer(file.buffer, {
+			public_id: `ads/${ad.userId}/${Date.now()}`
+		})
 
 		const adGenerated = await this.openaiService.generateAdContent(ad.productName, ad.targetAudience, imageUrl)
 

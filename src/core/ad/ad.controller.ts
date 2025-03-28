@@ -57,8 +57,7 @@ export class AdController {
 	)
 	async create(@Body() ad: CreateAdDTO, @UploadedFile() file): Promise<Ad> {
 		try {
-			const filePath = './uploads/' + file.filename
-			return await this.adService.createAd(ad, filePath)
+			return await this.adService.createAd(ad, file)
 		} catch (error) {
 			throw new InternalServerErrorException('ad/create-failed')
 		}
