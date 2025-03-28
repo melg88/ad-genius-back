@@ -20,7 +20,7 @@ export class MetaController {
   @ApiResponse(SHARE_AD_API_RESPONSE)
   async shareAd(@Body() ad: ShareAdDTO): Promise<Ad> {
     try {
-        return await this.metaService.postToInstagram(ad.accessToken, ad.accountId, ad.adId);
+        return await this.metaService.postToInstagram(ad.accessToken, ad.accountId, ad.adId, ad.contacts);
     } catch (error) {
         throw new InternalServerErrorException('ad/share-failed')
     }
