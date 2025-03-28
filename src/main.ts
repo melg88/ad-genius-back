@@ -18,7 +18,6 @@ async function bootstrap() {
 		.setTitle('AdGenius API')
 		.setDescription('The AdGenius API description')
 		.setVersion('1.0')
-		.addTag('ad-genius')
 		.build()
 	const document = SwaggerModule.createDocument(app, config)
 	SwaggerModule.setup('docs', app, document)

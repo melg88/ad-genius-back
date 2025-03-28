@@ -17,7 +17,7 @@ import {
 	UpdateUserCreditsDto
 } from './dtos'
 import { User } from './entities'
-import { ApiBody, ApiParam, ApiResponse } from '@nestjs/swagger'
+import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import {
 	BAD_REQUEST_API_RESPONSE,
 	CREATE_USER_API_RESPONSE,
@@ -32,6 +32,7 @@ import {
 } from '@core/common/docs/constants'
 import { Cron } from '@nestjs/schedule'
 
+@ApiTags('Identity')
 @ApiResponse(INTERNAL_SERVER_ERROR_API_RESPONSE)
 @ApiResponse(BAD_REQUEST_API_RESPONSE)
 @Controller('identity')
