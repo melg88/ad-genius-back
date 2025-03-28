@@ -13,7 +13,7 @@ import {
 	UseInterceptors,
 	UploadedFile
 } from '@nestjs/common'
-import { ApiResponse, ApiBody } from '@nestjs/swagger'
+import { ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger'
 import { AdService } from './ad.service'
 import { CreateAdDTO } from './dtos'
 import { ApiParam } from '@nestjs/swagger'
@@ -30,6 +30,7 @@ import { Ad } from './entities/ad.entity'
 import { FileInterceptor } from '@nestjs/platform-express'
 import * as multer from 'multer'
 
+@ApiTags('Ad')
 @ApiResponse(INTERNAL_SERVER_ERROR_API_RESPONSE)
 @ApiResponse(BAD_REQUEST_API_RESPONSE)
 @Controller('ad')

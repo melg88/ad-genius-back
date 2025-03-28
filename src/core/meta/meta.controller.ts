@@ -1,11 +1,11 @@
 import { SHARE_AD_API_RESPONSE } from '@core/common/docs/constants';
 import { Controller, Get, Query, Redirect, HttpException, HttpStatus, Body, HttpCode, InternalServerErrorException, Post, Inject } from '@nestjs/common';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Ad } from '@prisma/client';
-import axios from 'axios';
 import { MetaService } from './meta.service';
 import { ShareAdDTO } from './dtos';
 
+@ApiTags('Meta')
 @Controller('auth/instagram')
 export class MetaController {
   private clientId = process.env.INSTAGRAM_CLIENT_ID;
