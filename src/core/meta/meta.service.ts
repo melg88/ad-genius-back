@@ -1,6 +1,7 @@
 import { AdRepository } from '@core/ad/ad.repository'
 import { Inject, Injectable } from '@nestjs/common'
 import axios from 'axios'
+import { ContactEnum } from './dtos'
 
 
 @Injectable()
@@ -45,17 +46,18 @@ export class MetaService {
         return response.data;
       }
 
-    async postToInstagram(accessToken: string,  accountId: string, adId: string) {
+    async postToInstagram(accessToken: string,  accountId: string, adId: string, contacts: ContactEnum[]) {
     
         const createMediaUrl = `https://graph.facebook.com/v18.0/${accountId}/media`;
         const ad = await this.adRepository.findOneById(adId);
         if (!ad) {
             throw new Error('ad/not-found');
         }
+        const caption = this.formatInstagramCaption({...ad, contacts});
         const mediaResponse = await axios.post(createMediaUrl, null, {
           params: {
             image_url: ad.imageUrl,
-            caption: ad.description,
+            caption: caption,
             access_token: accessToken,
           },
         });
@@ -71,5 +73,61 @@ export class MetaService {
         });
     
         return publishResponse.data;
+      }
+
+    private formatInstagramCaption(ad: {
+        title: string;
+        description: string;
+        hashtags: string[];
+        price: number;
+        contacts: ContactEnum[];
+      }): string {
+        
+        const formattedPrice = new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+          minimumFractionDigits: 2
+        }).format(ad.price);
+      
+        const emojis = {
+          title: '✨',
+          price: '💲',
+          description: '📱',
+          hashtags: '🏷️',
+          contact: {
+            BIO: '👉',
+            EMAIL: '📧',
+            COMMENTS: '💬',
+            DM: '📥'
+          }
+        };
+      
+
+        const contactLines = ad.contacts.map(contactType => {
+          switch(contactType) {
+            case ContactEnum.BIO:
+              return `${emojis.contact.BIO} LINK NA BIO!`;
+            case ContactEnum.EMAIL:
+              return `${emojis.contact.EMAIL} Contato por email (ver bio)`;
+            case ContactEnum.COMMENTS:
+              return `${emojis.contact.COMMENTS} Comenta "QUERO" que te ajudamos!`;
+            case ContactEnum.DM:
+              return `${emojis.contact.DM} Chama no DM para mais info!`;
+            default:
+              return '';
+          }
+        });
+      
+        return `
+      ${emojis.title} ${ad.title}
+      
+      ${emojis.description} ${ad.description}
+      
+      ${emojis.price} Valor: ${formattedPrice}
+      
+      ${contactLines.join('\n')}
+      
+      ${emojis.hashtags} ${ad.hashtags.join(' ')}
+        `.trim();
       }
 }
