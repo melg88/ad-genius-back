@@ -1,3 +1,10 @@
+export type CreateAdParams = {
+	productName: string
+	targetAudience: string
+	price: number
+	userId: string
+}
+
 export interface IAd {
 	id: string
 	userId: string
@@ -15,7 +22,7 @@ export class Ad {
 	title: string
 	description: string
 	hashtags: string[]
-	imageUrl?: string[]
+	imageUrl?: string
 	constructor(ad: Ad) {
 		this.id = ad.id
 		this.userId = ad.userId

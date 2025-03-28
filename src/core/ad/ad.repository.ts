@@ -8,6 +8,7 @@ export class AdRepository {
 		userId: string,
 		price: number,
 		title: string,
+		imageUrl: string,
 		description: string,
 		hashtags: string[]
 	) {
@@ -16,6 +17,7 @@ export class AdRepository {
 				userId,
 				price: price,
 				title: title,
+				imageUrl: imageUrl,
 				description: description,
 				hashtags: hashtags
 			}
@@ -33,7 +35,7 @@ export class AdRepository {
 				description: true,
 				price: true,
 				hashtags: true,
-				imagesUrls: true,
+				imageUrl: true,
 				userId: true,
 			}
 		})

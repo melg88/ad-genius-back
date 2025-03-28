@@ -8,7 +8,10 @@ import {
 	HttpCode,
 	InternalServerErrorException,
 	NotFoundException,
-	Delete
+	Delete,
+	BadRequestException,
+	UseInterceptors,
+	UploadedFile
 } from '@nestjs/common'
 import { ApiResponse, ApiBody } from '@nestjs/swagger'
 import { AdService } from './ad.service'
@@ -20,9 +23,12 @@ import {
 	CREATE_AD_API_RESPONSE,
 	FIND_AD_API_RESPONSE,
 	GET_USER_API_RESPONSE,
-	DELETE_AD_API_RESPONSE
+	DELETE_AD_API_RESPONSE,
+	SHARE_AD_API_RESPONSE
 } from '@core/common/docs/constants'
 import { Ad } from './entities/ad.entity'
+import { FileInterceptor } from '@nestjs/platform-express'
+import * as multer from 'multer'
 
 @ApiResponse(INTERNAL_SERVER_ERROR_API_RESPONSE)
 @ApiResponse(BAD_REQUEST_API_RESPONSE)
@@ -34,10 +40,35 @@ export class AdController {
 	@HttpCode(201)
 	@ApiBody({ type: CreateAdDTO })
 	@ApiResponse(CREATE_AD_API_RESPONSE)
-	async create(@Body() ad: CreateAdDTO): Promise<Ad> {
+	@UseInterceptors(
+		FileInterceptor('file', {
+			storage: multer.diskStorage({
+				destination: './uploads',
+				filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
+			}),
+			fileFilter: (req, file, cb) => {
+				if (file.mimetype.startsWith('image/')) {
+					cb(null, true)
+				} else {
+					cb(new BadRequestException('Invalid file type'), false)
+				}
+			}
+		})
+	)
+	async create(@Body() ad: CreateAdDTO, @UploadedFile() file: Express.Multer.File) {
 		try {
-			return await this.adService.createAd(ad)
+			if (!file) {
+				throw new BadRequestException('Image file is required');
+			}
+			
+			return await this.adService.createAd({
+				productName: ad.productName,
+				targetAudience: ad.targetAudience,
+				price: ad.price,
+				userId: ad.userId
+			}, file)
 		} catch (error) {
+			console.error('Error creating ad:', error)
 			throw new InternalServerErrorException('ad/create-failed')
 		}
 	}

@@ -9,20 +9,12 @@ export class OpenaiService {
     this.openai.apiKey = process.env.OPENAI_API_KEY;
   }
 
-  private async generateCompletion(prompt: string): Promise<string> {
+  private async generateCompletion(messages: any[]): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant specialized in creating advertisements.',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
+        model: 'gpt-4-turbo',
+        response_format: { type: 'json_object'},
+        messages,
       });
 
       return response.choices[0].message.content.trim();
@@ -35,28 +27,55 @@ export class OpenaiService {
   async generateAdContent(
     productName: string,
     targetAudience: string,
-    keyFeatures: string
+    imageUrl: string
   ): Promise<{ title: string; description: string; hashtags: string[] }> {
-    // generate title
-    const titlePrompt = `Generate a catchy and engaging title for a product called "${productName}" targeted at "${targetAudience}".`;
-    const title = await this.generateCompletion(titlePrompt);
+    const messages = [
+      {
+        role: 'system',
+        content:
+          'You are an AI assistant specialized in creating engaging ads based on images and audience insights.',
+      },
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 
+            `Analise esta imagem e crie um anúncio otimizado para redes sociais com base no seguinte produto e público-alvo:
+            
+            - **Nome do Produto**: ${productName}
+            - **Público-Alvo**: ${targetAudience}
+            
+            Retorne **exclusivamente** um JSON **válido** com os seguintes campos, sem qualquer outro texto adicional antes ou depois do JSON:
+            {
+              "title": "Título do anúncio",
+              "description": "Descrição detalhada e persuasiva do produto, incluindo benefícios e diferenciais, utilize um texto que dialogue com o público alvo.",
+              "hashtags": ["Lista de hashtags populares e relevantes"]
+            }
 
-    // generate description
-    const descriptionPrompt = `Write a compelling description for a product called "${productName}" targeted at "${targetAudience}"
-     highlighting the following features: ${keyFeatures}.`;
-    const description = await this.generateCompletion(descriptionPrompt);
+            A descrição deve ser envolvente, destacando os diferenciais do produto e incentivando a compra. 
+            As hashtags devem ser estratégicas para aumentar o alcance da publicação.
+            `,
+           },
+          { type: 'image_url', image_url: { url: imageUrl } },
+        ],
+      },
+    ];
 
-    // generate hashtags
-    const hashtagsPrompt = `Suggest 5 relevant and popular hashtags for a product called "${productName}" targeted at "${targetAudience}" 
-    and related to these features: ${keyFeatures}. Return only the hashtags, separated by commas.`;
-    const hashtagsResponse = await this.generateCompletion(hashtagsPrompt);
-    const hashtags = hashtagsResponse.split(',').map((tag) => tag.trim());
-
-    // returns json
-    return {
-      title,
-      description,
-      hashtags,
+    const response = await this.generateCompletion(messages);
+    const respondeData = JSON.parse(response) as {
+      title: string;
+      description: string;
+      hashtags: string[];
     };
+
+    try {
+      return {
+        title: respondeData.title,
+        description: respondeData.description,
+        hashtags: respondeData.hashtags,
+      }
+    } catch (error) {
+      console.error('Error parsing OpenAI response:', response);
+      throw new Error('openai/invalid-json-response');
+    }
   }
 }
