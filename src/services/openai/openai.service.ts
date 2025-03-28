@@ -13,6 +13,7 @@ export class OpenaiService {
     try {
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4-turbo',
+        response_format: { type: 'json_object'},
         messages,
       });
 

@@ -55,10 +55,20 @@ export class AdController {
 			}
 		})
 	)
-	async create(@Body() ad: CreateAdDTO, @UploadedFile() file): Promise<Ad> {
+	async create(@Body() ad: CreateAdDTO, @UploadedFile() file: Express.Multer.File) {
 		try {
-			return await this.adService.createAd(ad, file)
+			if (!file) {
+				throw new BadRequestException('Image file is required');
+			}
+			
+			return await this.adService.createAd({
+				productName: ad.productName,
+				targetAudience: ad.targetAudience,
+				price: ad.price,
+				userId: ad.userId
+			}, file)
 		} catch (error) {
+			console.error('Error creating ad:', error)
 			throw new InternalServerErrorException('ad/create-failed')
 		}
 	}

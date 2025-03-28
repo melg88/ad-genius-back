@@ -1,3 +1,10 @@
+export type CreateAdParams = {
+	productName: string
+	targetAudience: string
+	price: number
+	userId: string
+}
+
 export interface IAd {
 	id: string
 	userId: string
