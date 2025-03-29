@@ -24,7 +24,8 @@ import {
 	FIND_AD_API_RESPONSE,
 	GET_USER_API_RESPONSE,
 	DELETE_AD_API_RESPONSE,
-	SHARE_AD_API_RESPONSE
+	SHARE_AD_API_RESPONSE,
+	GET_USER_AD_API_RESPONSE
 } from '@core/common/docs/constants'
 import { Ad } from './entities/ad.entity'
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -89,7 +90,7 @@ export class AdController {
 	}
 
 	@Get(':userId')
-	@ApiResponse(GET_USER_API_RESPONSE)
+	@ApiResponse(GET_USER_AD_API_RESPONSE)
 	@ApiParam({ name: 'userId', type: String, description: 'ID do usuário' })
 	async getAdsByUserId(@Param('userId') userId: string): Promise<Ad[]> {
 		try {
@@ -116,6 +117,16 @@ export class AdController {
 	}
 
 	@Get('status/:id')
+	@HttpCode(200)
+	@ApiResponse({status: 200, description: 'Status do vídeo', schema: {
+		properties: {
+			videoUrl: {
+				type: 'string',
+				description: 'URL do vídeo renderizado'
+			}
+		}
+	}})
+	@ApiParam({ name: 'id', type: String, description: 'ID do vídeo' })
 	async getVideoStatus(@Param('id') renderId: string) {
 		try{
 			const videoUrl = await this.adService.checkRenderStatus(renderId);
