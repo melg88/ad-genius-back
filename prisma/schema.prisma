@@ -25,8 +25,12 @@ model Ad {
   title       String    @map("title")
   hashtags    String[]  @map("hashtags")
   description String    @map("description")
+  caption     String    @default("") @map("caption")
 	price       Int       @map("price")
   imageUrl    String    @map("image_url")
+  videoId     String    @default("") @map("video_id")
+  audioUrl    String    @default("") @map("audio_url")
+  createdAt   DateTime  @default(now()) @map("created_at")
   userId      String    @map("user_id")
   user        User      @relation(fields: [userId], references: [id])
 }

@@ -10,6 +10,12 @@ export const configuration = () => ({
 		tokenUri: process.env.FIREBASE_TOKEN_URI,
 		authProviderCertURL: process.env.FIREBASE_AUTH_PROVIDER_CERT_URL,
 		clientCertURL: process.env.FIREBASE_CLIENT_CERT_URL
+	},
+	storage: {
+		azure: {
+			connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
+			containerName: process.env.AZURE_STORAGE_CONTAINER_NAME,
+		},
 	}
 })
 

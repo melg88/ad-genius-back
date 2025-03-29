@@ -114,5 +114,19 @@ export class AdController {
 			throw new InternalServerErrorException('ad/delete-failed')
 		}
 	}
+
+	@Get('status/:id')
+	async getVideoStatus(@Param('id') renderId: string) {
+		try{
+			const videoUrl = await this.adService.checkRenderStatus(renderId);
+			return videoUrl ? { videoUrl } : { status: 'processing' };	
+		}
+		catch (error) {
+			if (error instanceof NotFoundException) {
+				throw error;
+			}
+			throw new InternalServerErrorException('ad/status-failed')
+		}
+	}
 }
 
