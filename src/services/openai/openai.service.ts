@@ -28,7 +28,7 @@ export class OpenaiService {
     productName: string,
     targetAudience: string,
     imageUrl: string
-  ): Promise<{ title: string; description: string; hashtags: string[] }> {
+  ): Promise<{ title: string; description: string; hashtags: string[]; caption: string }> {
     const messages = [
       {
         role: 'system',
@@ -47,6 +47,7 @@ export class OpenaiService {
             Retorne **exclusivamente** um JSON **válido** com os seguintes campos, sem qualquer outro texto adicional antes ou depois do JSON:
             {
               "title": "Título do anúncio",
+              "caption: "Texto do anúncio que será falado no vídeo de divulgação do produto. O texto deve  ter cerca de 30 segundos de duração e ser otimizado para engajar o público alvo, utilizando a linguagem deles na internet.",
               "description": "Descrição detalhada e persuasiva do produto, incluindo benefícios e diferenciais, utilize um texto que dialogue com o público alvo.",
               "hashtags": ["Lista de hashtags populares e relevantes"]
             }
@@ -65,6 +66,7 @@ export class OpenaiService {
       title: string;
       description: string;
       hashtags: string[];
+      caption: string;
     };
 
     try {
@@ -72,6 +74,7 @@ export class OpenaiService {
         title: respondeData.title,
         description: respondeData.description,
         hashtags: respondeData.hashtags,
+        caption: respondeData.caption,
       }
     } catch (error) {
       console.error('Error parsing OpenAI response:', response);

@@ -13,6 +13,9 @@ export interface IAd {
 	description: string
 	hashtags: string[]
 	imageUrl?: string
+	videoId: string
+	audioUrl: string
+	caption: string
 }
 
 export class Ad {
@@ -23,6 +26,9 @@ export class Ad {
 	description: string
 	hashtags: string[]
 	imageUrl?: string
+	videoId: string
+	audioUrl: string
+	caption: string
 	constructor(ad: Ad) {
 		this.id = ad.id
 		this.userId = ad.userId
@@ -31,5 +37,8 @@ export class Ad {
 		this.price = ad.price
 		this.hashtags = ad.hashtags
 		this.imageUrl = ad.imageUrl
+		this.videoId = ad.videoId
+		this.audioUrl = ad.audioUrl
+		this.caption = ad.caption
 	}
 }

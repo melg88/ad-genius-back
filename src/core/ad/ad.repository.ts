@@ -10,7 +10,10 @@ export class AdRepository {
 		title: string,
 		imageUrl: string,
 		description: string,
-		hashtags: string[]
+		hashtags: string[],
+		caption: string,
+		videoId: string,
+		audioUrl: string,
 	) {
 		return await this.prisma.ad.create({
 			data: {
@@ -19,7 +22,10 @@ export class AdRepository {
 				title: title,
 				imageUrl: imageUrl,
 				description: description,
-				hashtags: hashtags
+				hashtags: hashtags,
+				caption: caption,
+				videoId: videoId,
+				audioUrl: audioUrl,
 			}
 		})
 	}
@@ -36,6 +42,9 @@ export class AdRepository {
 				price: true,
 				hashtags: true,
 				imageUrl: true,
+				videoId: true,
+				audioUrl: true,
+				caption: true,
 				userId: true,
 			}
 		})
