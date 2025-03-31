@@ -227,7 +227,6 @@ export class VideoService {
             'x-api-key': this.API_KEY,
           },
         }))
-
       const { status, url: videoUrl } = response.data.response;
       if (status === 'done') {
         return videoUrl; 
