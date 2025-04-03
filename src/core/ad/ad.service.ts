@@ -8,17 +8,14 @@ import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service'
 import * as fs from 'fs'
 import { VideoService } from 'src/services/video/video.service'
 import { StorageService } from 'src/services/storage/storage.service'
-import { TextToSpeechService } from 'src/services/text-to-speech/text-to-speech.service'
 
 export class AdService {
 	constructor(
 		@Inject(AdRepository) private adRepository: AdRepository,
 		@Inject(IdentityRepository) private identityRepository: IdentityRepository,
 		@Inject(OpenaiService) private openaiService: OpenaiService,
-		@Inject(CloudinaryService) private cloudinaryService: CloudinaryService,
 		@Inject(VideoService) private videoService: VideoService,
 		@Inject(StorageService) private readonly storageService: StorageService,
-		@Inject(TextToSpeechService) private readonly textToSpeechService: TextToSpeechService,
 	) {}
 
 	async createAd(ad: CreateAdParams, file: Express.Multer.File ) {
@@ -35,14 +32,12 @@ export class AdService {
 		await this.identityRepository.updateUserCredits(ad.userId, user.credits - 1)
 
 		const fileBuffer = await fs.promises.readFile(file.path);
-		const imageUrl = await this.cloudinaryService.uploadImageFromBuffer(fileBuffer, {
-			public_id: `ads/${ad.userId}/${Date.now()}`
-		})
 		
-		const adGenerated = await this.openaiService.generateAdContent(ad.productName, ad.targetAudience, imageUrl)
+		const imageUrl = await this.storageService.uploadImageFromBuffer(fileBuffer, `image-${ad.userId}-${Date.now()}`)
 
-		const audioPath = await this.textToSpeechService.generateAudio(adGenerated.caption, `${adGenerated.title}-${ad.userId}-${Date.now()}`)
-	
+		const adGenerated = await this.openaiService.generateAdContent(ad.productName, ad.targetAudience, imageUrl)
+		const audioPath = await this.openaiService.generateAudio(adGenerated.caption, `${ad.userId}-${Date.now()}`)
+
 		const audioAzurePath = await this.storageService.uploadAudio(audioPath, `${adGenerated.title}-${ad.userId}-${Date.now()}`)
 		
 		const videoId = await this.videoService.createVideo(imageUrl, audioAzurePath.outputPath, adGenerated.title, `R$ ${ad.price}`)

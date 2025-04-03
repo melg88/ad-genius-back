@@ -33,4 +33,24 @@ export class StorageService {
     return { outputPath: blockBlobClient.url };
   }
 
+  async uploadImageFromBuffer(buffer: Buffer, id: string) {
+    const storageConfig =
+      this.configService.get<AppConfig['storage']>('storage');
+
+    const blobServiceClient = BlobServiceClient.fromConnectionString(
+      storageConfig.azure.connectionString,
+    );
+    const containerClient = blobServiceClient.getContainerClient(
+      storageConfig.azure.containerName,
+    );
+
+    const blockBlobClient = containerClient.getBlockBlobClient(`${id}`);
+
+    await blockBlobClient.upload(buffer, buffer.length, {
+      blobHTTPHeaders: { blobContentType: 'image/jpeg' },
+    });
+
+    return blockBlobClient.url ;
+  }
+
 }

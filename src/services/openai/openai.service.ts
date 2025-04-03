@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { existsSync } from 'fs';
+import { mkdir, writeFile } from 'fs/promises';
 import { OpenAI } from 'openai';
+import { join } from 'path';
+import * as fs from 'fs'
+import * as util from 'util'
 
 @Injectable()
 export class OpenaiService {
@@ -79,6 +84,32 @@ export class OpenaiService {
     } catch (error) {
       console.error('Error parsing OpenAI response:', response);
       throw new Error('openai/invalid-json-response');
+    }
+  }
+
+  async generateAudio(caption: string, id:string): Promise<string> {
+    try {
+      const response = await this.openai.audio.speech.create({
+        model: 'tts-1',
+        input: caption,
+        voice: 'echo',
+      });
+
+      const audioBuffer = Buffer.from(await response.arrayBuffer());
+      /*const audioDir = join(__dirname, '..','..', 'uploads', 'audios');
+      if (!existsSync(audioDir)) {
+        await mkdir(audioDir, { recursive: true });
+      }
+      const filePath = join(audioDir, fileName);*/
+      const writeFile = util.promisify(fs.writeFile)
+      const fileName = `audio-${id}.mp3`;
+
+      await writeFile(fileName, audioBuffer, 'binary');
+
+      return `${fileName}`;
+    } catch (error) {
+      console.error('Error generating audio:', error);
+      throw new Error('openai/generate-audio-failed');
     }
   }
 }
