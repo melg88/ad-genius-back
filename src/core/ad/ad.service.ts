@@ -40,7 +40,7 @@ export class AdService {
 
 		const audioAzurePath = await this.storageService.uploadAudio(audioPath, `${adGenerated.title}-${ad.userId}-${Date.now()}`)
 		
-		const videoId = await this.videoService.createVideo(imageUrl, audioAzurePath.outputPath, adGenerated.title, `R$ ${ad.price}`)
+		const videoId = await this.videoService.createVideo(imageUrl, audioAzurePath.outputPath, adGenerated.title.toUpperCase(), `R$ ${ad.price}`)
 
 		return await this.adRepository.createAd(
 			ad.userId,
