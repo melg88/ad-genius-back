@@ -12,6 +12,7 @@ export class VideoService {
   async createVideo(imageUrl: string, audioUrl: string, title:string, price: string): Promise<string> {
     const requestBody = {
       timeline: {
+        background: '#F1EFEC',
         soundtrack: {
           src: audioUrl,
           effect: 'fadeOut',
@@ -20,42 +21,36 @@ export class VideoService {
           {
             "clips": [
           {
-            "asset": {
-              "type": "text",
-              "text": "COMPRE AGORA",
-              "alignment": {
-                "horizontal": "center",
-                "vertical": "center"
+              "asset": {
+                "type": "text",
+                "text": `COMPRE AGORA`,
+                "alignment": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "font": {
+                  "color": "#123458",
+                  "family": "Montserrat ExtraBold",
+                  "size": 66,
+                  "lineHeight": 1
+                },
+                "width": 600,
+                "height": 180,
+                "background": {
+                  "color": "#D4C9BE",
+                  "borderRadius": 50
+                }
               },
-              "font": {
-                "color": "#000000",
-                "family": "Montserrat ExtraBold",
-                "size": "66",
-                "lineHeight": 1
+              "start": 1.955,
+              "length": 30,
+              "offset": {
+                "x": 0,
+                "y": -0.3
               },
-              "width": 535,
-              "height": 163,
-              "background": {
-                "color": "#ffffff",
-                "borderRadius": 73
-              },
-              "stroke": {
-                "color": "#ffffff",
-                "width": 0
-              }
-            },
-            "start": 1.955,
-            "length": 30,
-            "offset": {
-              "x": 0,
-              "y": 0.066
-            },
-            "position": "center",
-            "fit": "none",
-            "scale": 1,
-            "transition": {
-              "in": "slideUp"
-            }
+              "position": "center",
+              "transition": {
+                "in": "slideUp"
+              }            
           }
         ]
       },
@@ -69,10 +64,10 @@ export class VideoService {
             },
             "start": 1.03,
             "offset": {
-              "x": -0.014,
-              "y": -0.188
+              "x": 0,
+              "y": 0
             },
-            "scale": 0.367,
+            "scale": 0.4,
             "position": "center",
             "transition": {
               "in": "slideUp"
@@ -91,7 +86,7 @@ export class VideoService {
                 "vertical": "center"
               },
               "font": {
-                "color": "#ffffff",
+                "color": "#123458",
                 "family": "Montserrat ExtraBold",
                 "size": "48",
                 "lineHeight": 1
@@ -99,7 +94,7 @@ export class VideoService {
               "width": 800,
               "height": 422,
               "stroke": {
-                "color": "#0055ff",
+                "color": "#030303",
                 "width": 0
               }
             },
@@ -123,53 +118,52 @@ export class VideoService {
           {
             "fit": "none",
             "scale": 1,
-            "asset": {
-              "type": "text",
-              "text": price,
-              "alignment": {
-                "horizontal": "center",
-                "vertical": "center"
+              "asset": {
+                "type": "text",
+                "text": price,
+                "alignment": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "font": {
+                  "color": "#030303",
+                  "family": "Montserrat ExtraBold",
+                  "size": 64,
+                  "lineHeight": 1
+                },
+                "width": 728,
+                "height": 72
               },
-              "font": {
-                "color": "#ffffff",
-                "family": "Montserrat ExtraBold",
-                "size": 46,
-                "lineHeight": 1
+              "start": 0.25,
+              "length": 30,
+              "offset": {
+                "x": 0,
+                "y": -0.4
               },
-              "width": 728,
-              "height": 72
-            },
-            "start": 0.25,
-            "length": 30,
-            "offset": {
-              "x": 0,
-              "y": 0.207
-            },
-            "position": "center",
-            "transition": {
-              "in": "slideUpFast"
-            }
+              "position": "center",
+              "transition": {
+                "in": "slideUpFast"
+              }            
           }
         ]
-      },
-      {
+      },{
         "clips": [
-          {
-            "length": 30,
-            "asset": {
-              "type": "image",
-              "src": "https://templates.shotstack.io/grey-minimalist-product-ad/cfd0e601-9e06-47b7-9d3d-c79e2ae51711/source.png"
-            },
-            "start": 0,
-            "offset": {
-              "x": 0,
-              "y": -0.471
-            },
-            "scale": 0.741,
-            "position": "center"
-          }
-        ]
-      }],
+        {
+          "length": 30,
+          "asset": {
+            "type": "image",
+            "src": "https://templates.shotstack.io/grey-minimalist-product-ad/cfd0e601-9e06-47b7-9d3d-c79e2ae51711/source.png"
+          },
+          "start": 0,
+          "offset": {
+            "x": 0,
+            "y": -0.471
+          },
+          "scale": 0.741,
+          "position": "center"
+        }
+      ]
+    }],
       },
       output: {
         format: 'mp4',
