@@ -45,7 +45,7 @@ export class VideoService {
               }
             },
             "start": 1.955,
-            "length": 40,
+            "length": 30,
             "offset": {
               "x": 0,
               "y": 0.066
@@ -62,7 +62,7 @@ export class VideoService {
       {
         "clips": [
           {
-            "length": 38,
+            "length": 28,
             "asset": {
               "type": "image",
               "src": imageUrl
@@ -77,24 +77,6 @@ export class VideoService {
             "transition": {
               "in": "slideUp"
             }
-          }
-        ]
-      },
-      {
-        "clips": [
-          {
-            "length": 40,
-            "asset": {
-              "type": "image",
-              "src": "https://templates.shotstack.io/grey-minimalist-product-ad/4ee059ca-2fcd-4bfe-9de9-d940238c49d4/source.png"
-            },
-            "start": 0,
-            "offset": {
-              "x": 0,
-              "y": -0.344
-            },
-            "scale": 0.535,
-            "position": "center"
           }
         ]
       },
@@ -122,7 +104,7 @@ export class VideoService {
               }
             },
             "start": 0,
-            "length": 40,
+            "length": 30,
             "offset": {
               "x": 0,
               "y": 0.338
@@ -158,7 +140,7 @@ export class VideoService {
               "height": 72
             },
             "start": 0.25,
-            "length": 40,
+            "length": 30,
             "offset": {
               "x": 0,
               "y": 0.207
@@ -173,7 +155,7 @@ export class VideoService {
       {
         "clips": [
           {
-            "length": 40,
+            "length": 30,
             "asset": {
               "type": "image",
               "src": "https://templates.shotstack.io/grey-minimalist-product-ad/cfd0e601-9e06-47b7-9d3d-c79e2ae51711/source.png"
