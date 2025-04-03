@@ -9,11 +9,11 @@ export class FirebaseService {
 		this.auth = firebaseApp.auth()
 	}
 
-	async createUser(data: { email: string; password: string }) {
+	async createUser(data: { email: string; password: string; name: string }) {
 		const user = await this.auth.createUser({
 			email: data.email,
 			password: data.password,
-			displayName: data.email.split('@')[0],
+			displayName: data.name,
 			emailVerified: true
 		})
 

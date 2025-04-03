@@ -118,25 +118,23 @@ export const GET_USER_API_RESPONSE = {
 	}
 }
 
-
-
 export const CREATE_AD_API_RESPONSE = {
 	status: 201,
 	description: 'Anúncio criado com sucesso',
 	schema: {
 		type: 'object',
 		properties: {
-		  id: { type: 'string' },
-		  title: { type: 'string' },
-		  description: { type: 'string' },
-		  price: { type: 'integer' },
-		  hashtags: { type: 'array', items: { type: 'string' } },
-		  imageUrl: { type: 'string' },
-		  videoId: { type: 'string' },
-		  audioUrl: { type: 'string' },
-		  caption: { type: 'string' },
-		  userId: { type: 'string' },
-		},
+			id: { type: 'string' },
+			title: { type: 'string' },
+			description: { type: 'string' },
+			price: { type: 'integer' },
+			hashtags: { type: 'array', items: { type: 'string' } },
+			imageUrl: { type: 'string' },
+			videoId: { type: 'string' },
+			audioUrl: { type: 'string' },
+			caption: { type: 'string' },
+			userId: { type: 'string' }
+		}
 	}
 }
 
@@ -155,8 +153,8 @@ export const SHARE_AD_API_RESPONSE = {
 			videoId: { type: 'string' },
 			audioUrl: { type: 'string' },
 			caption: { type: 'string' },
-			userId: { type: 'string' },
-		},
+			userId: { type: 'string' }
+		}
 	}
 }
 
@@ -175,8 +173,8 @@ export const FIND_AD_API_RESPONSE = {
 			videoId: { type: 'string' },
 			audioUrl: { type: 'string' },
 			caption: { type: 'string' },
-			userId: { type: 'string' },
-		},
+			userId: { type: 'string' }
+		}
 	}
 }
 
@@ -197,13 +195,13 @@ export const GET_USER_AD_API_RESPONSE = {
 				videoId: { type: 'string' },
 				audioUrl: { type: 'string' },
 				caption: { type: 'string' },
-				userId: { type: 'string' },
-			},
-		},
+				userId: { type: 'string' }
+			}
+		}
 	}
 }
 
 export const DELETE_AD_API_RESPONSE = {
 	status: 204,
-	description: 'Anúncio deletado com sucesso.',
+	description: 'Anúncio deletado com sucesso.'
 }

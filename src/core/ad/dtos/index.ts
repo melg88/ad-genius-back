@@ -8,16 +8,16 @@ export class CreateAdDTO {
 	userId: string
 
 	@ApiProperty({ description: 'The price' })
-    @Transform(({ value }) => {
-        const convertedValue = parseFloat(value)
-        if (isNaN(convertedValue)) {
-            throw new Error('price must be a valid number')
-        }
-        return convertedValue
-    })
-    @IsNumber({}, { message: 'price must be a number' })
-    price: number
-	
+	@Transform(({ value }) => {
+		const convertedValue = parseFloat(value)
+		if (isNaN(convertedValue)) {
+			throw new Error('price must be a valid number')
+		}
+		return convertedValue
+	})
+	@IsNumber({}, { message: 'price must be a number' })
+	price: number
+
 	@ApiProperty({ description: 'The product name' })
 	@IsString({ message: 'productName must be a string' })
 	productName: string

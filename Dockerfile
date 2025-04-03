@@ -2,9 +2,8 @@
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:18.16.0-alpine As build
-RUN apk add openssl openssl-dev libc6-compat && rm -rf /var/cache/apk/*
-RUN apk add --update --no-cache openssl1.1-compat
+FROM node:20-alpine AS build
+RUN apk add --no-cache openssl libc6-compat
 
 WORKDIR /usr/src/adgeniusback
 
@@ -22,7 +21,7 @@ RUN npm run build
 
 RUN npm pkg delete scripts.prepare
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 RUN yarn install --prod
 
@@ -32,16 +31,13 @@ USER node
 # PRODUCTION
 ###################
 
-FROM node:18.16.0-alpine As production
-#ARG SSL_PEM_CONTENT
+FROM node:20-alpine AS production
 
-RUN apk add openssl openssl-dev libc6-compat && rm -rf /var/cache/apk/*
-RUN apk add --update --no-cache openssl1.1-compat
+RUN apk add --no-cache openssl libc6-compat
 
 COPY --chown=node:node --from=build /usr/src/adgeniusback/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/adgeniusback/dist ./dist
 COPY --chown=node:node ./prisma ./prisma
-#RUN echo $SSL_PEM_CONTENT > ./prisma/database.crt.pem
 
 RUN npx prisma generate
 

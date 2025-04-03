@@ -13,7 +13,7 @@ export class AdRepository {
 		hashtags: string[],
 		caption: string,
 		videoId: string,
-		audioUrl: string,
+		audioUrl: string
 	) {
 		return await this.prisma.ad.create({
 			data: {
@@ -25,15 +25,15 @@ export class AdRepository {
 				hashtags: hashtags,
 				caption: caption,
 				videoId: videoId,
-				audioUrl: audioUrl,
+				audioUrl: audioUrl
 			}
 		})
 	}
 
 	async findOneById(adId: string) {
 		return await this.prisma.ad.findUnique({
-			where: { 
-				id: adId 
+			where: {
+				id: adId
 			},
 			select: {
 				id: true,
@@ -45,21 +45,20 @@ export class AdRepository {
 				videoId: true,
 				audioUrl: true,
 				caption: true,
-				userId: true,
+				userId: true
 			}
 		})
 	}
-	
+
 	async findByUserId(userId: string) {
 		return await this.prisma.ad.findMany({
-			where: { userId }  
-
+			where: { userId }
 		})
 	}
 
 	async deleteAd(id: string): Promise<void> {
 		await this.prisma.ad.delete({
 			where: { id }
-		});
+		})
 	}
 }
