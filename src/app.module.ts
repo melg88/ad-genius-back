@@ -11,7 +11,7 @@ import { configuration } from './config'
 
 @Module({
 	imports: [
-		ConfigModule.forRoot({ load: [configuration] }),
+		ConfigModule.forRoot({ load: [configuration], isGlobal: true }),
 		IdentityModule,
 		AdModule,
 		PrismaModule,
