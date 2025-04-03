@@ -60,15 +60,18 @@ export class AdController {
 	async create(@Body() ad: CreateAdDTO, @UploadedFile() file: Express.Multer.File) {
 		try {
 			if (!file) {
-				throw new BadRequestException('Image file is required');
+				throw new BadRequestException('Image file is required')
 			}
-			
-			return await this.adService.createAd({
-				productName: ad.productName,
-				targetAudience: ad.targetAudience,
-				price: ad.price,
-				userId: ad.userId
-			}, file)
+
+			return await this.adService.createAd(
+				{
+					productName: ad.productName,
+					targetAudience: ad.targetAudience,
+					price: ad.price,
+					userId: ad.userId
+				},
+				file
+			)
 		} catch (error) {
 			console.error('Error creating ad:', error)
 			throw new InternalServerErrorException('ad/create-failed')
@@ -83,10 +86,10 @@ export class AdController {
 			return await this.adService.findAdById(id)
 		} catch (error) {
 			if (error instanceof NotFoundException) {
-				throw error;
+				throw error
 			}
 			throw new InternalServerErrorException('ad/find-failed')
-		}	
+		}
 	}
 
 	@Get(':userId')
@@ -97,20 +100,19 @@ export class AdController {
 			return await this.adService.findByUserId(userId)
 		} catch (error) {
 			throw new InternalServerErrorException('ad/get-failed')
-
 		}
 	}
 
 	@Delete(':id')
-	@HttpCode(204) 
+	@HttpCode(204)
 	@ApiResponse(DELETE_AD_API_RESPONSE)
-	@ApiParam({ name: 'id', type: String, description: 'ID do anúncio'}) 
+	@ApiParam({ name: 'id', type: String, description: 'ID do anúncio' })
 	async deleteAd(@Param('id') id: string): Promise<void> {
 		try {
 			await this.adService.deleteAd(id)
 		} catch (error) {
-			if(error instanceof NotFoundException) {
-							throw error;
+			if (error instanceof NotFoundException) {
+				throw error
 			}
 			throw new InternalServerErrorException('ad/delete-failed')
 		}
@@ -118,26 +120,28 @@ export class AdController {
 
 	@Get('status/:id')
 	@HttpCode(200)
-	@ApiResponse({status: 200, description: 'Status do vídeo', schema: {
-		properties: {
-			videoUrl: {
-				type: 'string',
-				description: 'URL do vídeo renderizado'
+	@ApiResponse({
+		status: 200,
+		description: 'Status do vídeo',
+		schema: {
+			properties: {
+				videoUrl: {
+					type: 'string',
+					description: 'URL do vídeo renderizado'
+				}
 			}
 		}
-	}})
+	})
 	@ApiParam({ name: 'id', type: String, description: 'ID do vídeo' })
 	async getVideoStatus(@Param('id') renderId: string) {
-		try{
-			const videoUrl = await this.adService.checkRenderStatus(renderId);
-			return videoUrl ? { videoUrl } : { status: 'processing' };	
-		}
-		catch (error) {
+		try {
+			const videoUrl = await this.adService.checkRenderStatus(renderId)
+			return videoUrl ? { videoUrl } : { status: 'processing' }
+		} catch (error) {
 			if (error instanceof NotFoundException) {
-				throw error;
+				throw error
 			}
 			throw new InternalServerErrorException('ad/status-failed')
 		}
 	}
 }
-

@@ -14,8 +14,8 @@ export const configuration = () => ({
 	storage: {
 		azure: {
 			connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
-			containerName: process.env.AZURE_STORAGE_CONTAINER_NAME,
-		},
+			containerName: process.env.AZURE_STORAGE_CONTAINER_NAME
+		}
 	}
 })
 

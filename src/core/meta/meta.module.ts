@@ -4,8 +4,8 @@ import { MetaController } from './meta.controller'
 import { AdRepository } from '@core/ad/ad.repository'
 
 @Module({
-    providers: [MetaService, AdRepository],
-    exports: [MetaService],
-    controllers: [MetaController],
+	providers: [MetaService, AdRepository],
+	exports: [MetaService],
+	controllers: [MetaController]
 })
 export class MetaModule {}
