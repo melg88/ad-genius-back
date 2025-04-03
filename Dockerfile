@@ -15,6 +15,7 @@ RUN npm pkg delete scripts.prepare
 RUN yarn
 
 COPY --chown=node:node . .
+COPY --chown=node:node .env .env
 
 RUN npx prisma generate
 RUN npm run build
@@ -38,6 +39,7 @@ RUN apk add --no-cache openssl libc6-compat
 COPY --chown=node:node --from=build /usr/src/adgeniusback/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/adgeniusback/dist ./dist
 COPY --chown=node:node ./prisma ./prisma
+COPY --chown=node:node .env .env
 
 RUN npx prisma generate
 
