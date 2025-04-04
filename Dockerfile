@@ -1,45 +1,54 @@
 ###################
-# BUILD FOR PRODUCTION (usando bullseye-slim)
+# BUILD STAGE (usando bullseye-slim)
 ###################
-
-FROM node:18-bullseye-slim AS build
-
-# Configurações essenciais
-ENV NODE_ENV=development
+FROM node:18-bullseye-slim AS builder
 
 WORKDIR /usr/src/adgeniusback
 
+# 1. Instala dependências de build apenas se necessário
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Copia arquivos de dependência primeiro
 COPY --chown=node:node package.json yarn.lock ./
 
+# 3. Instalação otimizada
 RUN yarn install --frozen-lockfile --network-timeout 1000000
 
+# 4. Copia o resto e faz build
 COPY --chown=node:node . .
-COPY --chown=node:node .env .env
-
 RUN npx prisma generate && \
-    npm run build && \
-    yarn install --production --ignore-scripts --prefer-offline
+    npm run build
 
 ###################
-# PRODUCTION (Alpine leve)
+# PRODUCTION STAGE (solução sem apk add)
 ###################
+FROM node:20-slim AS production
 
-FROM node:20-alpine AS production
-
-RUN apk add --no-cache openssl libc6-compat dumb-init
+# 5. Instala apenas o essencial via apt
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/adgeniusback
 
-COPY --chown=node:node --from=build /usr/src/adgeniusback/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/adgeniusback/dist ./dist
-COPY --chown=node:node --from=build /usr/src/adgeniusback/.env .env
+# 6. Copia artefatos do build
+COPY --chown=node:node --from=builder /usr/src/adgeniusback/node_modules ./node_modules
+COPY --chown=node:node --from=builder /usr/src/adgeniusback/dist ./dist
+COPY --chown=node:node --from=builder /usr/src/adgeniusback/.env .env
 COPY --chown=node:node ./prisma ./prisma
 
+# 7. Configuração final
 ENV NODE_ENV=production
 USER node
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+# 8. Usando node diretamente (sem PM2 para simplificar)
+RUN npm install pm2 -g
 CMD ["pm2-runtime", "dist/main.js"]
+#CMD ["node", "dist/main.js"]
 
 
 ###################
