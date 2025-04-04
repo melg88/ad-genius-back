@@ -1,55 +1,51 @@
 ###################
-# BUILD STAGE (usando bullseye-slim)
+# BUILD STAGE
 ###################
-FROM node:18-bullseye-slim AS builder
+FROM node:20-bookworm-slim AS builder  # Alterado para Node 20
 
 WORKDIR /usr/src/adgeniusback
 
-# 1. Instala dependências de build apenas se necessário
+# 1. Instala dependências de build (Debian)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     openssl \
+    python3 \
+    make \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Copia arquivos de dependência primeiro
+# 2. Copia arquivos de dependência
 COPY --chown=node:node package.json yarn.lock ./
 
-# 3. Instalação otimizada
-RUN yarn install --frozen-lockfile --network-timeout 1000000
+# 3. Instalação forçando engine (se necessário)
+RUN yarn config set ignore-engines true && \
+    yarn install --frozen-lockfile --network-timeout 1000000
 
-# 4. Copia o resto e faz build
+# 4. Build do projeto
 COPY --chown=node:node . .
 RUN npx prisma generate && \
     npm run build
 
 ###################
-# PRODUCTION STAGE (solução sem apk add)
+# PRODUCTION STAGE
 ###################
-FROM node:20-slim AS production
+FROM node:20-alpine AS production 
 
-# 5. Instala apenas o essencial via apt
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    openssl \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache openssl libc6-compat dumb-init
 
 WORKDIR /usr/src/adgeniusback
 
-# 6. Copia artefatos do build
 COPY --chown=node:node --from=builder /usr/src/adgeniusback/node_modules ./node_modules
 COPY --chown=node:node --from=builder /usr/src/adgeniusback/dist ./dist
 COPY --chown=node:node --from=builder /usr/src/adgeniusback/.env .env
 COPY --chown=node:node ./prisma ./prisma
 
-# 7. Configuração final
 ENV NODE_ENV=production
 USER node
 
-# 8. Usando node diretamente (sem PM2 para simplificar)
-RUN npm install pm2 -g
-CMD ["pm2-runtime", "dist/main.js"]
-#CMD ["node", "dist/main.js"]
 
+RUN npm install pm2 -g
+CMD ["dumb-init", "pm2-runtime", "dist/main.js"]
 
 ###################
 # BUILD FOR PRODUCTION
