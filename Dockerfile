@@ -21,8 +21,11 @@ COPY --chown=node:node package.json yarn.lock ./
 RUN yarn config set ignore-engines true && \
     yarn install --frozen-lockfile --network-timeout 1000000
 
+
+
 # 4. Build do projeto
 COPY --chown=node:node . .
+COPY --chown=node:node .env .env
 RUN npx prisma generate && \
     npm run build
 
