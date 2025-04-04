@@ -37,7 +37,7 @@ WORKDIR /usr/src/adgeniusback
 
 COPY --chown=node:node --from=builder /usr/src/adgeniusback/node_modules ./node_modules
 COPY --chown=node:node --from=builder /usr/src/adgeniusback/dist ./dist
-COPY --chown=node:node --from=builder /usr/src/adgeniusback/.env .env
+COPY --chown=node:node .env .env
 COPY --chown=node:node ./prisma ./prisma
 
 ENV NODE_ENV=production
