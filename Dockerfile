@@ -1,7 +1,7 @@
 ###################
 # BUILD STAGE
 ###################
-FROM node:20-bookworm-slim AS builder  # Alterado para Node 20
+FROM node:20-bookworm-slim AS builder
 
 WORKDIR /usr/src/adgeniusback
 
