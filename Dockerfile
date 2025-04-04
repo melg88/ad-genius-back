@@ -2,7 +2,7 @@
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:18-alpine AS builder
+FROM node:18-alpine AS build
 
 # Atualiza APK com limite de memória
 RUN apk update --no-cache && \
