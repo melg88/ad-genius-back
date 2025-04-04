@@ -3,7 +3,8 @@
 ###################
 
 FROM node:20-alpine AS build
-RUN apk add --no-cache openssl libc6-compat
+RUN apk update
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /usr/src/adgeniusback
 
