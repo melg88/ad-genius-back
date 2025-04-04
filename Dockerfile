@@ -2,9 +2,18 @@
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:20-alpine AS build
-RUN apk update
-RUN apk add --no-cache libc6-compat
+FROM node:18-alpine AS builder
+
+# Atualiza APK com limite de memória
+RUN apk update --no-cache && \
+    apk add --no-cache --virtual .build-deps \
+    openssl \
+    libc6-compat \
+    && rm -rf /var/cache/apk/*
+		
+# FROM node:20-alpine AS build
+#RUN apk update
+#RUN apk add --no-cache libc6-compat
 
 WORKDIR /usr/src/adgeniusback
 
