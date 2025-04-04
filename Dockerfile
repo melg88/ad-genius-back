@@ -50,10 +50,10 @@ CMD ["pm2-runtime", "dist/main.js"]
 
 # Atualiza APK com limite de memória
 #RUN apk update --no-cache && \
-    apk add --no-cache --virtual .build-deps \
-    openssl \
-    libc6-compat \
-    && rm -rf /var/cache/apk/*
+    #apk add --no-cache --virtual .build-deps \
+   # openssl \
+   # libc6-compat \
+  #  && rm -rf /var/cache/apk/*
 		
 # FROM node:20-alpine AS build
 #RUN apk update
