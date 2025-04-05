@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { existsSync } from 'fs'
-import { mkdir, writeFile } from 'fs/promises'
 import { OpenAI } from 'openai'
-import { join } from 'path'
-import * as fs from 'fs'
-import * as util from 'util'
+import { promises as fs } from 'fs'
 
 @Injectable()
 export class OpenaiService {
@@ -107,10 +103,10 @@ export class OpenaiService {
         await mkdir(audioDir, { recursive: true });
       }
       const filePath = join(audioDir, fileName);*/
-			const writeFile = util.promisify(fs.writeFile)
+			//const writeFile = util.promisify(fs.writeFile)
 			const fileName = `audio-${id}.mp3`
 
-			await writeFile(fileName, audioBuffer, 'binary')
+			await fs.writeFile(fileName, audioBuffer, 'binary')
 
 			return `${fileName}`
 		} catch (error) {
