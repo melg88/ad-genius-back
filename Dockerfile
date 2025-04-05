@@ -14,10 +14,12 @@ COPY --chown=node:node yarn.lock ./
 # Remove scripts.prepare (evita problemas com husky, por exemplo)
 RUN npm pkg delete scripts.prepare
 
+COPY --chown=node:node prisma ./prisma
+RUN npx prisma generate
+
 # Instala dependências e faz o build
 RUN yarn
 COPY --chown=node:node . .
-RUN npx prisma generate
 RUN npm run build
 
 # Instala apenas dependências de produção
