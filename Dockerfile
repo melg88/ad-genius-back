@@ -38,6 +38,8 @@ FROM node:20-alpine AS production
 
 WORKDIR /usr/src/adgeniusback
 
+RUN apk add --no-cache openssl
+
 # Copia apenas o necessário da fase `build`
 COPY --chown=node:node --from=build /usr/src/adgeniusback/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/adgeniusback/dist ./dist
