@@ -1,4 +1,4 @@
-import { createReadStream, existsSync, mkdirSync } from 'fs'
+import { createReadStream } from 'fs'
 import { BlobServiceClient } from '@azure/storage-blob'
 import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -9,14 +9,8 @@ export class StorageService {
 	constructor(@Inject(ConfigService) private configService: ConfigService<AppConfig>) {}
 
 	async uploadAudio(localPath: string, id: string) {
-		const storageConfig = this.configService.get<AppConfig['storage']>('storage')
-
-		const blobServiceClient = BlobServiceClient.fromConnectionString(
-			storageConfig.azure.connectionString
-		)
-		const containerClient = blobServiceClient.getContainerClient(
-			storageConfig.azure.containerName
-		)
+		
+		const containerClient = this.getContainerClient()
 
 		const blockBlobClient = containerClient.getBlockBlobClient(`${id}`)
 		const readStream = createReadStream(localPath)
@@ -30,14 +24,8 @@ export class StorageService {
 	}
 
 	async uploadImageFromBuffer(buffer: Buffer, id: string) {
-		const storageConfig = this.configService.get<AppConfig['storage']>('storage')
-
-		const blobServiceClient = BlobServiceClient.fromConnectionString(
-			storageConfig.azure.connectionString
-		)
-		const containerClient = blobServiceClient.getContainerClient(
-			storageConfig.azure.containerName
-		)
+		
+		const containerClient = this.getContainerClient()
 
 		const blockBlobClient = containerClient.getBlockBlobClient(`${id}`)
 
@@ -47,4 +35,11 @@ export class StorageService {
 
 		return blockBlobClient.url
 	}
+
+	private getContainerClient() {
+		const storageConfig = this.configService.get<AppConfig['storage']>('storage')
+		const blobServiceClient = BlobServiceClient.fromConnectionString(storageConfig.azure.connectionString)
+		return blobServiceClient.getContainerClient(storageConfig.azure.containerName)
+	  }
+	  
 }
