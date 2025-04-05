@@ -14,6 +14,7 @@ COPY --chown=node:node yarn.lock ./
 # Remove scripts.prepare (evita problemas com husky, por exemplo)
 RUN npm pkg delete scripts.prepare
 
+RUN apk add --no-cache openssl
 COPY --chown=node:node prisma ./prisma
 RUN npx prisma generate
 
