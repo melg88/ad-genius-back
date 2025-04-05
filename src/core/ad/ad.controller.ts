@@ -92,7 +92,7 @@ export class AdController {
 		}
 	}
 
-	@Get(':userId')
+	@Get('user/:userId')
 	@ApiResponse(GET_USER_AD_API_RESPONSE)
 	@ApiParam({ name: 'userId', type: String, description: 'ID do usuário' })
 	async getAdsByUserId(@Param('userId') userId: string): Promise<Ad[]> {
